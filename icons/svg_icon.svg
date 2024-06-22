@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256mm"
+   height="256mm"
+   viewBox="0 0 256 256"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="svg_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.74394518"
+     inkscape:cx="409.30435"
+     inkscape:cy="514.15079"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="253.37888"
+       y="307.81838"
+       width="285.63933"
+       height="135.0906"
+       id="rect36" />
+    <linearGradient
+       id="linearGradient4"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#71d0ff;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#00aaff;stop-opacity:1;"
+         offset="1"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff7189;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#ff002b;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="145.60796"
+       y1="112.66384"
+       x2="32.692623"
+       y2="44.260792"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0041493,0,0,1.0328392,1.3972395,14.773479)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4"
+       id="linearGradient3"
+       gradientUnits="userSpaceOnUse"
+       x1="145.60796"
+       y1="112.66384"
+       x2="32.692623"
+       y2="44.260792"
+       gradientTransform="matrix(1.0041493,0,0,1.0328393,86.780409,80.314426)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4"
+       id="linearGradient37"
+       x1="490.83774"
+       y1="415.40833"
+       x2="258.992"
+       y2="329.01428"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient37-2"
+       x1="480.0574"
+       y1="415.97672"
+       x2="260.18985"
+       y2="329.5827"
+       gradientUnits="userSpaceOnUse" />
+    <rect
+       x="253.37888"
+       y="307.81839"
+       width="285.63934"
+       height="135.09061"
+       id="rect36-5" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient2);stroke-width:0.269449"
+       id="rect1"
+       width="125"
+       height="80"
+       x="28.41744"
+       y="56.331921"
+       ry="18.181818" />
+    <rect
+       style="fill:url(#linearGradient3);stroke-width:0.269;stroke-dasharray:none"
+       id="rect1-9"
+       width="125"
+       height="80"
+       x="113.8006"
+       y="121.87287"
+       ry="18.181818"
+       inkscape:transform-center-x="1.5151516"
+       inkscape:transform-center-y="2.3376609" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.29691515,0,0,0.31286104,-31.713193,-31.128519)"
+       id="text36"
+       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36);fill:url(#linearGradient37);stroke-width:1.01711;stroke-dasharray:none"><tspan
+         x="253.37891"
+         y="414.86481"
+         id="tspan2">ABC</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.29691515,0,0,0.31286104,54.878492,33.321699)"
+       id="text36-8"
+       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36-5);fill:url(#linearGradient37-2);stroke-width:1.01711;stroke-dasharray:none"><tspan
+         x="253.37891"
+         y="414.86481"
+         id="tspan3">XYZ</tspan></text>
+  </g>
+</svg>
