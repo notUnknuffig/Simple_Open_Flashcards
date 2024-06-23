@@ -1,0 +1,45 @@
+.main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-block: 15%;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.droparea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 70%;
+    background-color: var(--clr-general-shade-2);
+    border-radius: 15px;
+}
+
+.droparea img {
+    height: 70%;
+    max-height: 15rem;
+}
+
+.active {
+    border: 5px dotted var(--clr-general-shade-3);
+}
+
+.file_dialog {
+    display: none;
+}
+
+.upload-button {
+    width: 10rem;
+    height: 3rem;
+    background-color: var(--clr-general-shade-2);
+    border: transparent;
+    border-radius: 15px;
+}
+
+.upload-button:focus {
+    border: 5px solid var(--clr-general-shade-3);
+}

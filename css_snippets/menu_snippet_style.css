@@ -1,0 +1,45 @@
+.menu {
+    padding-inline: 5%;
+    padding-block: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, auto));
+    grid-template-rows: repeat(1fr, auto);
+    justify-items: center;
+    align-items: center;
+    min-height: 30rem;
+    gap: 20px;
+}
+
+.grid-head {
+    padding-block: 2rem;
+    width: 100%;
+    text-align: center;
+    color: var(--clr-general-shade-3);
+    grid-column: 1 / 4;
+}
+
+.main-button {
+    text-align: center;
+    background-color: var(--clr-general-shade-2);
+    height: 80%;
+    width: 80%;
+    min-height: 20rem;
+    max-width: 20rem;
+    max-height: 20rem;
+    border-radius: 15px;
+}
+
+.main-button p {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--clr-general-shade-3);
+}
+
+.main-button img {
+    width: 60%;
+}
+
+.main-button:hover img,
+.main-button:hover p {
+    filter: brightness(var(--flt-theme));
+}

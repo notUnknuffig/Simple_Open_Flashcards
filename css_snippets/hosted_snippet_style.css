@@ -1,0 +1,68 @@
+.main {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    padding: 3rem;
+    gap: 3rem;
+    justify-items: center;
+}
+
+.main h1 {
+    color: var(--clr-general-shade-3);
+}
+
+.host-slot {
+    padding: 1.8rem;
+    background-color: var(--clr-general-shade-2);
+    border-radius: 15px;
+    height: 100%;
+    width: 100%;
+    max-width: 40rem;
+}
+
+.gh-host {
+    display: grid;
+    align-items: center;
+    grid-template-rows: 1fr 3rem 3rem 3rem 7rem 3rem 3rem 2fr;
+}
+
+.web-host {
+    display: grid;
+    align-items: center;
+    grid-template-rows: 1fr 3rem 3rem 4fr;
+}
+
+.host-input,
+.host-button,
+.gh-select {
+    border: transparent;
+    background-color: var(--clr-general-shade-1);
+    color: var(--clr-general-shade-4);
+    border-radius: 5px;
+    width: 100%;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    padding-inline: 10px;
+    transition-property: color border;
+    transition-duration: 0.15s;
+}
+
+.host-button:focus,
+.host-input:focus,
+.gh-select:focus {
+    outline: none;
+    border: 3px solid var(--clr-general-shade-3);
+    color: var(--clr-general-heighlight);
+}
+
+.host-button:hover,
+.host-input:hover,
+.gh-select:hover {
+    color: var(--clr-general-heighlight);
+}
+
+.gh-host p {
+    color: var(--clr-general-shade-3);
+}

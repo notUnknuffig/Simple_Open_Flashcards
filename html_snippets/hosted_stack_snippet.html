@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="../css_snippets/hosted_snippet_style.css" />
+<div class="main">
+    <div class="host-slot gh-host">
+        <h1>Import From GitHub Repository</h1>
+        <input placeholder="Account Name" class="host-input" type="text" id="acc-name" />
+        <input placeholder="Repository Name" class="host-input" type="text" id="rep-name" />
+        <input placeholder="File Name (with extention)" class="host-input" type="text" id="fil-name" />
+        <p id="fil-select-txt">
+            You can access the "LanguageDictionaries" repository by only filling the file name. You can choose the name
+            from the dropdown menu.
+        </p>
+        <select id="fil-select" class="gh-select">
+            <option value="" selected disabled hidden>Choose from Repo</option>
+            <option value="Estonian.csv">Estonian - English</option>
+        </select>
+        <button class="host-button" id="gh-import">Import</button>
+    </div>
+    <div class="host-slot web-host">
+        <h1>Import From Different Host</h1>
+        <input type="url" id="web-link" class="host-input" />
+        <button class="host-button" id="web-submit">Import</button>
+    </div>
+</div>

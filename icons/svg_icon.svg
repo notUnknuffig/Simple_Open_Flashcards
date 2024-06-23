@@ -25,16 +25,28 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.74394518"
-     inkscape:cx="409.30435"
-     inkscape:cy="514.15079"
-     inkscape:window-width="2560"
-     inkscape:window-height="1377"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:cx="401.23924"
+     inkscape:cy="534.31356"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="341"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
      id="defs1">
+    <linearGradient
+       id="linearGradient6"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#82d5ff;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#0086fd;stop-opacity:1;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
     <rect
        x="253.37888"
        y="307.81838"
@@ -77,7 +89,7 @@
        gradientTransform="matrix(1.0041493,0,0,1.0328392,1.3972395,14.773479)" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4"
+       xlink:href="#linearGradient6"
        id="linearGradient3"
        gradientUnits="userSpaceOnUse"
        x1="145.60796"
@@ -136,17 +148,17 @@
        xml:space="preserve"
        transform="matrix(0.29691515,0,0,0.31286104,-31.713193,-31.128519)"
        id="text36"
-       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36);fill:url(#linearGradient37);stroke-width:1.01711;stroke-dasharray:none"><tspan
+       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36);fill:url(#linearGradient37);stroke-width:1.01711;stroke-dasharray:none;-inkscape-font-specification:'Segoe UI';font-family:'Segoe UI';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"><tspan
          x="253.37891"
-         y="414.86481"
-         id="tspan2">ABC</tspan></text>
+         y="413.50658"
+         id="tspan3">ABC</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.29691515,0,0,0.31286104,54.878492,33.321699)"
        id="text36-8"
-       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36-5);fill:url(#linearGradient37-2);stroke-width:1.01711;stroke-dasharray:none"><tspan
+       style="font-size:117.333px;white-space:pre;shape-inside:url(#rect36-5);fill:url(#linearGradient37-2);stroke-width:1.01711;stroke-dasharray:none;-inkscape-font-specification:'Segoe UI';font-family:'Segoe UI';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"><tspan
          x="253.37891"
-         y="414.86481"
-         id="tspan3">XYZ</tspan></text>
+         y="413.50658"
+         id="tspan4">XYZ</tspan></text>
   </g>
 </svg>

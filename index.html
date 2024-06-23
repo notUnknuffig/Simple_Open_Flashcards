@@ -6,12 +6,35 @@
         <title>Simple Open Flashcards</title>
         <link rel="stylesheet" href="main_style.css" />
         <link rel="icon" href="icons/svg_icon.svg" type="image/x-icon" />
-        <script src="main.js"></script>
+        <script src="javascript/vocabs.js"></script>
+        <script src="javascript/main.js" defer></script>
+        <script src="javascript/snippet_manager.js" defer></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet" />
     </head>
     <body>
-        <div class="logo"></div>
-        <div class="navbar"></div>
-        <div class="sidebar"></div>
-        <div class="main-window"></div>
+        <img src="icons/svg_icon.svg" class="logo" />
+        <div class="navbar">
+            <h1><span class="blue">Simple Open</span> <span class="red">Flashcards</span></h1>
+        </div>
+        <div class="sidebar">
+            <h1></h1>
+            <label class="switch">
+                <input class="checkbox" type="checkbox" onchange="setTheme()" id="theme-switch" />
+                <span class="slider"><img src="icons/Sun.svg" /></span>
+            </label>
+            <div class="collections-button">
+                <button class="invisible-button" onclick="insertSnippet('collections_snippet')">
+                    <img src="icons/collections_button.svg" />
+                </button>
+            </div>
+            <div class="home-button">
+                <button class="invisible-button" onclick="insertSnippet('home_snippet')">
+                    <img src="icons/home_button.svg" />
+                </button>
+            </div>
+        </div>
+        <div class="main-window" id="snippet-insert"></div>
     </body>
 </html>
