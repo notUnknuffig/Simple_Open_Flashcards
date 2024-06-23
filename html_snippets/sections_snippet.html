@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="../css_snippets/menu_snippet_style.css" />
+<h1 class="grid-head">Sections</h1>
+<div class="settings-container">
+    <div class="sections-head-card">
+        <h1 id="info-card"></h1>
+        <p>Direction:</p>
+        <select class="cr-input">
+            <option id="forwards-select" value="0" selected></option>
+            <option id="backwards-select" value="1"></option>
+            <option value="2">Random</option>
+        </select>
+    </div>
+    <div class="sections-head-card">
+        <p class="cr-txt">Select custom range:</p>
+        <input class="cr-input" type="text" id="custom-range" />
+        <button class="cr-input" id="custom-range-submit" onclick="selectCustomRange()">Select</button>
+    </div>
+</div>
+<div class="menu" id="stack-list"></div>

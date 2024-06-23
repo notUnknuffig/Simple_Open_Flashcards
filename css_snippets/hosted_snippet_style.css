@@ -31,7 +31,8 @@
 .web-host {
     display: grid;
     align-items: center;
-    grid-template-rows: 1fr 3rem 3rem 4fr;
+    grid-template-rows: 1fr 1rem 3rem 3rem 4fr;
+    gap: 1rem;
 }
 
 .host-input,
@@ -63,6 +64,8 @@
     color: var(--clr-general-heighlight);
 }
 
-.gh-host p {
+.gh-host p,
+.web-host p {
+    font-size: 1.1rem;
     color: var(--clr-general-shade-3);
 }

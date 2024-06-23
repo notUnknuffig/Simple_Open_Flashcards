@@ -1,7 +1,7 @@
 const snippetInsertionPiont = document.getElementById("snippet-insert");
+const dialogInsertionPiont = document.getElementById("dialog-insert");
 
-function insertSnippet(fileName) {
-    localStorage.setItem("current_snippet", fileName);
+function insertSnippet(fileName, data) {
     fetch(`../html_snippets/${fileName}.html`)
         .then((res) => {
             if (res.ok) {
@@ -9,16 +9,31 @@ function insertSnippet(fileName) {
             }
         })
         .then((htmlSnippet) => {
-            snippetInsertionPiont.innerHTML = htmlSnippet;
+            if (fileName.endsWith("dialog")) {
+                dialogInsertionPiont.innerHTML = htmlSnippet;
+            } else {
+                snippetInsertionPiont.innerHTML = htmlSnippet;
+                sessionStorage.setItem("current_snippet", fileName);
+            }
             if (fileName == "import_stack_snippet") {
                 innit_import();
             } else if (fileName == "hosted_stack_snippet") {
                 innit_host();
+            } else if (fileName == "storage_dialog") {
+                innit_storage_dialog();
+            } else if (fileName == "collections_snippet") {
+                innit_collection();
+            } else if (fileName == "sections_snippet") {
+                innit_sections(data);
             }
         });
 }
 
-insertSnippet(localStorage.getItem("current_snippet"));
+function closeDialog() {
+    dialogInsertionPiont.innerHTML = "";
+}
+
+insertSnippet(sessionStorage.getItem("current_snippet"));
 
 function innit_import() {
     const file_input = document.getElementById("file");
@@ -65,7 +80,6 @@ function innit_host() {
     const gh_submit = (e) => {
         if (acc_name.value === "" && rep_name.value === "" && fil_name.value === "" && fil_select.value !== "") {
             importFromGitHub(fil_select.value);
-            console.log(fil_select.value);
         } else if (acc_name.value !== "" && rep_name.value !== "" && fil_name.value !== "" && fil_select.value === "") {
             console.log(fil_select.value);
             importFromGitHub(fil_name.value, acc_name.value, rep_name.value);
@@ -95,6 +109,95 @@ function innit_host() {
 
     [acc_name, rep_name, fil_name].forEach((element) => {
         element.addEventListener("keyup", fill_form);
+    });
+}
+
+function innit_collection() {
+    const empty_text = document.getElementById("empty-txt");
+    if (stackDict.length == 0) {
+        empty_text.style.display = "block";
+        return;
+    } else {
+        const stack_list = document.getElementById("stack-list");
+        empty_text.style.display = "none";
+        fetch(`../html_snippets/stack_element.html`)
+            .then((res) => {
+                if (res.ok) {
+                    return res.text();
+                }
+            })
+            .then((htmlSnippet) => {
+                for (const [key, value] of Object.entries(stackDict)) {
+                    stack_list.innerHTML = stack_list.innerHTML + htmlSnippet.replace(/__key/g, key);
+                }
+            });
+    }
+}
+
+function innit_sections(key) {
+    if (key != undefined) {
+        selected_stack = key;
+        sessionStorage.setItem("selected_stack", key);
+    }
+    const langs = stackDict[selected_stack]["languages"];
+    const stack = sectionize(stackDict[selected_stack]["stack"]);
+
+    document.getElementById("info-card").innerHTML = langs[0] + " - " + langs[1];
+    document.getElementById("forwards-select").innerHTML = langs[0] + " - " + langs[1];
+    document.getElementById("backwards-select").innerHTML = langs[1] + " - " + langs[0];
+
+    const stack_list = document.getElementById("stack-list");
+    fetch(`../html_snippets/section_element.html`)
+        .then((res) => {
+            if (res.ok) {
+                return res.text();
+            }
+        })
+        .then((htmlSnippet) => {
+            for (let i = 0; i < stack.length; i++) {
+                stack_list.innerHTML = stack_list.innerHTML + htmlSnippet.replace(/__key/g, i + 1);
+            }
+        });
+}
+
+function innit_storage_dialog() {
+    const acc_btn = document.getElementById("accept-button");
+    const dcl_btn = document.getElementById("decline-button");
+    const _stack_name = document.getElementById("dict-name");
+
+    acc_btn.addEventListener("click", (e) => {
+        if (_stack_name.value != "") {
+            var storedFiles = {};
+            if (localStorage.getItem("stored_stacks") != null) {
+                storedFiles = JSON.parse(localStorage.getItem("stored_stacks"));
+            }
+            storedFiles[_stack_name.value] = {
+                languages: headerLang(loadedFile),
+                stack: loadedFile,
+                progress: [],
+            };
+            localStorage.setItem("stored_stacks", JSON.stringify(storedFiles));
+            stackDict[_stack_name.value] = {
+                languages: headerLang(loadedFile),
+                stack: loadedFile,
+                progress: [],
+            };
+            closeDialog();
+        } else {
+            alert("Enter a name for the stack");
+        }
+    });
+    dcl_btn.addEventListener("click", (e) => {
+        if (_stack_name.value != "") {
+            stackDict[_stack_name.value] = {
+                languages: headerLang(loadedFile),
+                stack: loadedFile,
+                progress: [],
+            };
+            closeDialog();
+        } else {
+            alert("Enter a name for the stack");
+        }
     });
 }
 
