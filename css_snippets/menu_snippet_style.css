@@ -7,7 +7,7 @@
     justify-items: center;
     align-items: center;
     min-height: 30rem;
-    gap: 20px;
+    gap: 3rem;
 }
 
 .grid-head {
@@ -22,10 +22,9 @@
     position: relative;
     text-align: center;
     background-color: var(--clr-general-shade-2);
-    height: 80%;
-    width: 80%;
+    height: 100%;
+    min-width: 100%;
     min-height: 20rem;
-    max-width: 20rem;
     max-height: 20rem;
     border-radius: 15px;
 }
@@ -37,7 +36,7 @@
 }
 
 .main-button img {
-    width: 60%;
+    height: 60%;
 }
 
 .main-button:hover .main-icon,
@@ -67,14 +66,17 @@
 .settings-container {
     display: flex;
     justify-content: space-between;
-    padding-inline: calc(5% + 20px);
+    padding-inline: 5%;
 }
 
 .sections-head-card {
     padding: 1.8rem;
     background-color: var(--clr-general-shade-2);
     border-radius: 15px;
-    width: 30%;
+    width: 100%;
+    display: grid;
+    column-gap: 1.8rem;
+    grid-template-columns: 12rem 1fr;
 }
 
 .cr-input {
@@ -88,7 +90,7 @@
     padding-inline: 10px;
     transition-property: color border;
     transition-duration: 0.15s;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .cr-input:focus {
@@ -102,12 +104,19 @@
 }
 
 .sections-head-card h1 {
+    grid-column: 1 / span 2;
     text-align: center;
+    margin-bottom: 1rem;
     font-size: 1.5rem;
     color: var(--clr-general-shade-4);
 }
 
 .sections-head-card p {
+    text-align: center;
     font-size: 1.3rem;
     color: var(--clr-general-shade-4);
+}
+
+#custom-range-submit {
+    grid-column: 1 / span 2;
 }

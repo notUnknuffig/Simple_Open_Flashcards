@@ -2,6 +2,7 @@ const reader = new FileReader();
 var loadedFile = "";
 var stackDict = [];
 var selected_stack = "";
+var selected_sectionized_stack = [];
 var selected_section = 0;
 if (localStorage.getItem("stored_stacks") != null) {
     stackDict = JSON.parse(localStorage.getItem("stored_stacks"));
@@ -138,6 +139,55 @@ function sectionize(str) {
         sectionized_array[section - 1].push([vocab[0], vocab[1]]);
     }
     return sectionized_array;
+}
+
+function selectCustomRange() {
+    const custom_range_input = document.getElementById("custom-range");
+    var input_array = custom_range_input.value.split("-");
+    if (input_array[0] == "") {
+        alert("Select a section or enter a range between two values.");
+        return;
+    } else if (input_array.length == 1) {
+        input_array.push(input_array[0]);
+    } else if (input_array.length > 2) {
+        alert("Select a range between a maximum of two values.");
+        return;
+    }
+    var stack = [];
+    for (let i = Number(input_array[0]) - 1; i < Number(input_array[1]); i++) {
+        if (selected_sectionized_stack.length < i) {
+            break;
+        }
+        stack = stack.concat(selected_sectionized_stack[i]);
+    }
+    startVocabGame(stack);
+}
+
+function startVocabGame(data) {
+    const dirrection = document.getElementById("dir-select").value;
+    const game = document.getElementById("game-select").value;
+    var current_index = data.length - 1;
+    var inverse_pos = Array.from(Array(data.length).fill(0));
+
+    while (current_index >= 0) {
+        if (dirrection == 1) {
+            inverse_pos[current_index] = 1;
+            data[current_index].reverse();
+        } else if (dirrection == 2) {
+            if (Math.round(Math.random()) == 1) {
+                inverse_pos[current_index] = 1;
+                data[current_index].reverse();
+            }
+        }
+        var random_index = Math.floor(Math.random() * current_index);
+        if (current_index != 0) {
+            current_index--;
+            [data[current_index], data[random_index]] = [data[random_index], data[current_index]];
+        } else {
+            current_index--;
+        }
+    }
+    insertSnippet(game + "_game_snippet", [data, game, inverse_pos]);
 }
 
 function editVocabs(key) {}

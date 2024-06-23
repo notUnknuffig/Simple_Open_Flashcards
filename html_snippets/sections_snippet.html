@@ -4,15 +4,20 @@
     <div class="sections-head-card">
         <h1 id="info-card"></h1>
         <p>Direction:</p>
-        <select class="cr-input">
+        <select class="cr-input" id="dir-select">
             <option id="forwards-select" value="0" selected></option>
             <option id="backwards-select" value="1"></option>
             <option value="2">Random</option>
         </select>
-    </div>
-    <div class="sections-head-card">
+        <p>Game Modes:</p>
+        <select class="cr-input" id="game-select">
+            <option value="flashcard" selected>Flashcards</option>
+            <option value="type">Type</option>
+            <option value="pick">Pick</option>
+            <option value="random">Random</option>
+        </select>
         <p class="cr-txt">Select custom range:</p>
-        <input class="cr-input" type="text" id="custom-range" />
+        <input class="cr-input" type="text" id="custom-range" placeholder="X-Y" />
         <button class="cr-input" id="custom-range-submit" onclick="selectCustomRange()">Select</button>
     </div>
 </div>

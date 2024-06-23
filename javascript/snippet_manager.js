@@ -2,6 +2,9 @@ const snippetInsertionPiont = document.getElementById("snippet-insert");
 const dialogInsertionPiont = document.getElementById("dialog-insert");
 
 function insertSnippet(fileName, data) {
+    if (fileName == "random_game_snippet") {
+        fileName = ["flashcard_game_snippet", "type_game_snippet", "pick_game_snippet"][Math.floor(Math.random() * 3)];
+    }
     fetch(`../html_snippets/${fileName}.html`)
         .then((res) => {
             if (res.ok) {
@@ -9,6 +12,7 @@ function insertSnippet(fileName, data) {
             }
         })
         .then((htmlSnippet) => {
+            console.log(fileName);
             if (fileName.endsWith("dialog")) {
                 dialogInsertionPiont.innerHTML = htmlSnippet;
             } else {
@@ -25,6 +29,12 @@ function insertSnippet(fileName, data) {
                 innit_collection();
             } else if (fileName == "sections_snippet") {
                 innit_sections(data);
+            } else if (fileName == "flashcard_game_snippet") {
+                innit_flashcard_game(data);
+            } else if (fileName == "type_game_snippet") {
+                innit_type_game(data);
+            } else if (fileName == "pick_game_snippet") {
+                innit_pick_game(data);
             }
         });
 }
@@ -33,6 +43,9 @@ function closeDialog() {
     dialogInsertionPiont.innerHTML = "";
 }
 
+if (sessionStorage.getItem("current_snippet") == undefined) {
+    sessionStorage.setItem("current_snippet", "home_snippet");
+}
 insertSnippet(sessionStorage.getItem("current_snippet"));
 
 function innit_import() {
@@ -140,8 +153,7 @@ function innit_sections(key) {
         sessionStorage.setItem("selected_stack", key);
     }
     const langs = stackDict[selected_stack]["languages"];
-    const stack = sectionize(stackDict[selected_stack]["stack"]);
-
+    selected_sectionized_stack = sectionize(stackDict[selected_stack]["stack"]);
     document.getElementById("info-card").innerHTML = langs[0] + " - " + langs[1];
     document.getElementById("forwards-select").innerHTML = langs[0] + " - " + langs[1];
     document.getElementById("backwards-select").innerHTML = langs[1] + " - " + langs[0];
@@ -154,7 +166,7 @@ function innit_sections(key) {
             }
         })
         .then((htmlSnippet) => {
-            for (let i = 0; i < stack.length; i++) {
+            for (let i = 0; i < selected_sectionized_stack.length; i++) {
                 stack_list.innerHTML = stack_list.innerHTML + htmlSnippet.replace(/__key/g, i + 1);
             }
         });
