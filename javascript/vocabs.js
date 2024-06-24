@@ -168,6 +168,9 @@ function startVocabGame(data) {
     const game = document.getElementById("game-select").value;
     var current_index = data.length - 1;
     var inverse_pos = Array.from(Array(data.length).fill(0));
+    sessionStorage.setItem("round", 0);
+    sessionStorage.setItem("score", 0);
+    sessionStorage.setItem("fails", 0);
 
     while (current_index >= 0) {
         if (dirrection == 1) {
@@ -187,7 +190,8 @@ function startVocabGame(data) {
             current_index--;
         }
     }
-    insertSnippet(game + "_game_snippet", [data, game, inverse_pos]);
+    sessionStorage.setItem("game_stack", JSON.stringify([data, game, inverse_pos]));
+    insertSnippet("game_snippet", [data, game, inverse_pos]);
 }
 
 function editVocabs(key) {}

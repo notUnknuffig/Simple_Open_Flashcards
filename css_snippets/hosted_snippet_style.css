@@ -46,7 +46,7 @@
     height: 2.5rem;
     font-size: 1.2rem;
     padding-inline: 10px;
-    transition-property: color border;
+    transition-property: color, border;
     transition-duration: 0.15s;
 }
 

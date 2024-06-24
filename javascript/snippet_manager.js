@@ -12,7 +12,6 @@ function insertSnippet(fileName, data) {
             }
         })
         .then((htmlSnippet) => {
-            console.log(fileName);
             if (fileName.endsWith("dialog")) {
                 dialogInsertionPiont.innerHTML = htmlSnippet;
             } else {
@@ -29,12 +28,8 @@ function insertSnippet(fileName, data) {
                 innit_collection();
             } else if (fileName == "sections_snippet") {
                 innit_sections(data);
-            } else if (fileName == "flashcard_game_snippet") {
-                innit_flashcard_game(data);
-            } else if (fileName == "type_game_snippet") {
-                innit_type_game(data);
-            } else if (fileName == "pick_game_snippet") {
-                innit_pick_game(data);
+            } else if (fileName == "game_snippet") {
+                innit_game(data);
             }
         });
 }
@@ -42,6 +37,8 @@ function insertSnippet(fileName, data) {
 function closeDialog() {
     dialogInsertionPiont.innerHTML = "";
 }
+
+function flashcardButton(knownVocab) {}
 
 if (sessionStorage.getItem("current_snippet") == undefined) {
     sessionStorage.setItem("current_snippet", "home_snippet");
@@ -145,6 +142,128 @@ function innit_collection() {
                 }
             });
     }
+}
+
+function innit_game(data) {
+    var round = 0;
+    var score = 0;
+    var fails = 0;
+    var isRandom = false;
+
+    if (data == undefined) {
+        data = JSON.parse(sessionStorage.getItem("game_stack"));
+    }
+    if (sessionStorage.getItem("round") != undefined) {
+        round = Number(sessionStorage.getItem("round"));
+        score = Number(sessionStorage.getItem("score"));
+        fails = Number(sessionStorage.getItem("fails"));
+    }
+
+    const inputContainer = document.getElementById("input-container");
+    const gameModes = [
+        "<div class='flashcard-input'><button id='show-button'>Show</button>",
+        "<div class='flashcard-input'><button id='button_1'>Known</button><button id='button_2'>Unknown</button></div>",
+        "<div class='type-input'><input type='text' id='text-input' /><button id='button_1'>Enter</button></div>",
+        "<div class='pick-input'><button id='button_1'>Enter</button><button id='button_2'>Enter</button><button id='button_3'>Enter</button><button id='button_4'>Enter</button></div>",
+    ];
+
+    const flashcardContainer = document.getElementById("flashcard-container");
+    const nextCard = () => {
+        if (round == data[0].length) {
+            console.log(score, fails);
+            return;
+        }
+        const cardStr = `<div class="flashcard"><p id="vocab">${data[0][round][0]}</p>
+        <p id="result-vocab">${data[0][round][1]}</p>
+        <p class="lang-info">${stackDict[selected_stack]["languages"][data[2][round]]}</p></div>`;
+        flashcardContainer.innerHTML = cardStr;
+        sessionStorage.setItem("round", round);
+        sessionStorage.setItem("score", score);
+        sessionStorage.setItem("fails", fails);
+
+        if (data[1] == "random" || isRandom == true) {
+            isRandom = true;
+            data[1] = ["flashcard", "type", "pick"][Math.floor(Math.random() * 3)];
+        }
+        if (data[1] == "flashcard") {
+            inputContainer.innerHTML = gameModes[0];
+            document.getElementById("show-button").addEventListener("click", (e) => {
+                inputContainer.innerHTML = gameModes[1];
+                document.getElementById("result-vocab").style.display = "block";
+                document.getElementById("button_1").addEventListener("click", (e) => {
+                    score++;
+                    nextCard();
+                });
+                document.getElementById("button_2").addEventListener("click", (e) => {
+                    fails++;
+                    nextCard();
+                });
+            });
+        } else if (data[1] == "type") {
+            inputContainer.innerHTML = gameModes[2];
+            const text_field = document.getElementById("text-input");
+            text_field.select();
+            text_field.focus();
+            var current_fails = 0;
+            var word = data[0][round][1];
+            const evaluateInput = () => {
+                if (text_field.value.toLowerCase() == word.split(" (")[0].toLowerCase()) {
+                    if (current_fails >= 5) {
+                        score++;
+                    }
+                    nextCard();
+                } else {
+                    current_fails++;
+                    if (current_fails == 5) {
+                        document.getElementById("result-vocab").style.display = "block";
+                        fails++;
+                    }
+                }
+            };
+            text_field.addEventListener("keydown", (e) => {
+                if (e.key == "Enter") {
+                    evaluateInput();
+                }
+            });
+            document.getElementById("button_1").addEventListener("click", evaluateInput);
+        } else if (data[1] == "pick") {
+            inputContainer.innerHTML = gameModes[3];
+            const button_array = [
+                document.getElementById("button_1"),
+                document.getElementById("button_2"),
+                document.getElementById("button_3"),
+                document.getElementById("button_4"),
+            ];
+            var resultIndex = Math.floor(Math.random() * 4);
+            var usedIndecies = [round];
+            for (let i = 0; i < button_array.length; i++) {
+                const element = button_array[i];
+                if (i == resultIndex) {
+                    element.innerHTML = data[0][round][1];
+                    element.addEventListener("click", () => {
+                        score++;
+                        nextCard();
+                    });
+                } else {
+                    var randomIndex = Math.floor(Math.random() * data[0].length);
+                    while (usedIndecies.indexOf(randomIndex) !== -1) {
+                        randomIndex = Math.floor(Math.random() * data[0].length);
+                    }
+                    usedIndecies.push(randomIndex);
+                    element.innerHTML =
+                        data[0][randomIndex][Math.abs(data[2][round] - Math.abs(data[2][randomIndex] - 1))].split(
+                            " ("
+                        )[0];
+                    element.addEventListener("click", (e) => {
+                        fails++;
+                    });
+                }
+            }
+        }
+        round++;
+    };
+
+    nextCard();
 }
 
 function innit_sections(key) {
