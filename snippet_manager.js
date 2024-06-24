@@ -5,7 +5,7 @@ function insertSnippet(fileName, data) {
     if (fileName == "random_game_snippet") {
         fileName = ["flashcard_game_snippet", "type_game_snippet", "pick_game_snippet"][Math.floor(Math.random() * 3)];
     }
-    fetch(`../html_snippets/${fileName}.html`)
+    fetch(`./html_snippets/${fileName}.html`)
         .then((res) => {
             if (res.ok) {
                 return res.text();
@@ -133,7 +133,7 @@ function innit_collection() {
     } else {
         const stack_list = document.getElementById("stack-list");
         empty_text.style.display = "none";
-        fetch(`../html_snippets/stack_element.html`)
+        fetch(`./html_snippets/stack_element.html`)
             .then((res) => {
                 if (res.ok) {
                     return res.text();
@@ -158,8 +158,13 @@ function innit_sections(key) {
     document.getElementById("forwards-select").innerHTML = langs[0] + " - " + langs[1];
     document.getElementById("backwards-select").innerHTML = langs[1] + " - " + langs[0];
 
+    document.getElementById("custom-range").addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+            selectCustomRange();
+        }
+    });
     const stack_list = document.getElementById("stack-list");
-    fetch(`../html_snippets/section_element.html`)
+    fetch(`./html_snippets/section_element.html`)
         .then((res) => {
             if (res.ok) {
                 return res.text();
