@@ -1,0 +1,201 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --grd-blue: linear-gradient(45deg, #7381ff, #0400cb);
+    --grd-red: linear-gradient(45deg, #ff7676, #d30000);
+}
+
+body {
+    background-color: #fcfcff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+        "Open Sans", "Helvetica Neue", sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100svh;
+    justify-items: center;
+    align-items: center;
+    padding: 5%;
+}
+
+.introduction {
+    position: relative;
+    bottom: 5%;
+    display: grid;
+    grid-template-rows: 10rem auto;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    justify-items: center;
+    column-gap: 2rem;
+    row-gap: 1rem;
+}
+
+.introduction * {
+    grid-column: 1 / span 2;
+}
+
+.introduction img {
+    height: 100%;
+    position: relative;
+    top: 2rem;
+}
+
+.introduction .title {
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.introduction .title .red {
+    background: var(--grd-red);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.introduction .title .blue {
+    background: var(--grd-blue);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.introduction .subtitle {
+    margin-block: 15px;
+    font-size: 19px;
+    color: #505050;
+}
+
+.introduction a {
+    font-size: 19px;
+    font-weight: 500;
+    padding: 0.2rem;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: -4px 4px 4px #50505050;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.introduction a:hover {
+    transform: translateY(5px);
+}
+
+.introduction .start-button {
+    color: white;
+    background: var(--grd-blue);
+    grid-column: 1;
+}
+
+.introduction .border-background {
+    padding: 0.3rem;
+}
+
+.introduction .read-button .border-background {
+    background-color: #fcfcff;
+    border-radius: 7px;
+}
+
+.introduction .read-button {
+    grid-column: 2;
+    background: var(--grd-red);
+}
+
+.introduction .read-button .border-background p {
+    background: var(--grd-red);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-color: #fcfcff;
+    border-radius: 10px;
+}
+
+.floating-cards {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url("icons/Grid_Texture.png");
+    background-size: 80svh;
+}
+
+.floating-cards::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: radial-gradient(#fcfcffc0, #fcfcffde, #fcfcffff, #fcfcffff);
+}
+
+.floating-cards .card {
+    width: 50%;
+    aspect-ratio: 5 / 3;
+    border-radius: 23px;
+    position: relative;
+    box-shadow: -4px 4px 4px #50505050;
+    backdrop-filter: blur(4px);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 0.1rem;
+    text-align: center;
+}
+
+.floating-cards .card .card-vocab {
+    font-size: 35px;
+    color: #9c9c9c;
+    font-weight: 600;
+    align-self: end;
+}
+
+.floating-cards .card .card-answer {
+    font-size: 20px;
+    color: #9c9c9c;
+    font-weight: 300;
+}
+
+.floating-cards .blue {
+    background-color: #e1e4ff80;
+}
+
+.floating-cards .red {
+    background-color: #ffd3d380;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(5%);
+    }
+    50% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(5%);
+    }
+}
+
+.floating-cards .card-1 {
+    z-index: 2;
+    right: 10%;
+    top: 6%;
+    animation: float 20s infinite;
+}
+
+.floating-cards .card-2 {
+    z-index: 1;
+    left: 14%;
+    animation: float 20s infinite reverse;
+}
+
+.floating-cards .card-3 {
+    bottom: 6%;
+    animation: float 18s infinite;
+}

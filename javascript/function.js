@@ -1,6 +1,31 @@
+const reader = new FileReader();
+var loadedFile = "";
+var stackDict = [];
+var selected_stack = "";
+var selected_sectionized_stack = [];
+var selected_section = 0;
+
 const snippetInsertionPiont = document.getElementById("snippet-insert");
 const dialogInsertionPiont = document.getElementById("dialog-insert");
 
+if (localStorage.getItem("stored_stacks") != null) {
+    stackDict = JSON.parse(localStorage.getItem("stored_stacks"));
+}
+if (sessionStorage.getItem("selected_stack") != null) {
+    selected_stack = sessionStorage.getItem("selected_stack");
+}
+if (sessionStorage.getItem("current_snippet") == undefined) {
+    sessionStorage.setItem("current_snippet", "home_snippet");
+}
+insertSnippet(sessionStorage.getItem("current_snippet"));
+
+reader.addEventListener("load", function (e) {
+    var fileContents = e.target.result;
+    loadedFile = fileContents;
+    insertSnippet("storage_dialog");
+});
+
+// insert HTML-snippets into main HTML file
 function insertSnippet(fileName, data) {
     if (fileName == "random_game_snippet") {
         fileName = ["flashcard_game_snippet", "type_game_snippet", "pick_game_snippet"][Math.floor(Math.random() * 3)];
@@ -34,17 +59,7 @@ function insertSnippet(fileName, data) {
         });
 }
 
-function closeDialog() {
-    dialogInsertionPiont.innerHTML = "";
-}
-
-function flashcardButton(knownVocab) {}
-
-if (sessionStorage.getItem("current_snippet") == undefined) {
-    sessionStorage.setItem("current_snippet", "home_snippet");
-}
-insertSnippet(sessionStorage.getItem("current_snippet"));
-
+//innit scripts for HTML-Snippets
 function innit_import() {
     const file_input = document.getElementById("file");
     const droparea = document.getElementById("file-droparea");
@@ -55,11 +70,11 @@ function innit_import() {
     const handelDrop = (e) => {
         const dt = e.dataTransfer;
         const files = [...dt.files];
-        processFiles(files);
+        processSingleFiles(files);
     };
     const getFiles = () => {
         var files = [...file_input.files];
-        processFiles(files);
+        processSingleFiles(files);
     };
 
     droparea.addEventListener("drop", handelDrop);
@@ -318,7 +333,8 @@ function innit_storage_dialog() {
                 stack: loadedFile,
                 progress: [],
             };
-            closeDialog();
+            loadedFile = "";
+            dialogInsertionPiont.innerHTML = "";
         } else {
             alert("Enter a name for the stack");
         }
@@ -330,13 +346,154 @@ function innit_storage_dialog() {
                 stack: loadedFile,
                 progress: [],
             };
-            closeDialog();
+            loadedFile = "";
+            dialogInsertionPiont.innerHTML = "";
         } else {
             alert("Enter a name for the stack");
         }
     });
 }
 
+// Select File Button
 function select_file() {
     document.getElementById("file").click();
 }
+
+// Go from file-array to single file -> Take first item only
+function processSingleFiles(file_array) {
+    if (file_array.length > 1) {
+        alert("Only one file allowed. Only the first item will be processed.");
+    }
+    if (file_array[0].name.endsWith(".csv")) {
+        reader.readAsText(file_array[0]);
+    } else {
+        alert("File import faild. Select a file with a .csv ending.");
+    }
+}
+
+// Get data from web
+function importFromGitHub(fileName, acc, repName) {
+    acc = acc || "notUnknuffig";
+    repName = repName || "LanguageDictionaries";
+    fileName = fileName || "Estonian.csv";
+
+    const link = `https://raw.githubusercontent.com/${acc}/${repName}/main/${fileName}`;
+    (async () => {
+        const res = await fetch(link)
+            .then((res) => {
+                if (res.ok) {
+                    return res.text();
+                }
+            })
+            .then((t) => {
+                if (t != undefined) {
+                    loadedFile = t;
+                    insertSnippet("storage_dialog");
+                }
+            });
+    })();
+}
+
+function importFromWeb(link) {
+    if (link.endsWith(".csv")) {
+        (async () => {
+            const res = await fetch(link)
+                .then((res) => {
+                    if (res.ok) {
+                        return res.text();
+                    }
+                })
+                .then((t) => {
+                    if (t != undefined) {
+                        loadedFile = t;
+                        insertSnippet("storage_dialog");
+                    }
+                });
+        })();
+    } else {
+        alert("The selected file has to be a CSV file.");
+    }
+}
+
+// Single out language from CSV-file
+function headerLang(file) {
+    file = file.split("\n", 1)[0];
+    file = file.split(";");
+    return [file[0], file[1]];
+}
+
+// Sort the array by sections [Section_1,Section_2] -> [[Section_1],[Section_2]]
+function sectionize(str) {
+    str_array = str.split("\n");
+    var section = 0;
+    sectionized_array = [[]];
+    for (let i = 1; i < str_array.length - 1; i++) {
+        vocab = str_array[i].split(";");
+        if (section != Number(vocab[vocab.length - 1]) && vocab[vocab.length - 1] != "") {
+            section = Number(vocab[vocab.length - 1]);
+        }
+        if (sectionized_array.length < section) {
+            sectionized_array.push([]);
+        }
+        sectionized_array[section - 1].push([vocab[0], vocab[1]]);
+    }
+    return sectionized_array;
+}
+
+// Select custom range for section
+function selectCustomRange() {
+    const custom_range_input = document.getElementById("custom-range");
+    var input_array = custom_range_input.value.split("-");
+    if (input_array[0] == "") {
+        alert("Select a section or enter a range between two values.");
+        return;
+    } else if (input_array.length == 1) {
+        input_array.push(input_array[0]);
+    } else if (input_array.length > 2) {
+        alert("Select a range between a maximum of two values.");
+        return;
+    }
+    var stack = [];
+    for (let i = Number(input_array[0]) - 1; i < Number(input_array[1]); i++) {
+        if (selected_sectionized_stack.length < i) {
+            break;
+        }
+        stack = stack.concat(selected_sectionized_stack[i]);
+    }
+    startVocabGame(stack);
+}
+
+// Innit the vocab game
+function startVocabGame(data) {
+    const dirrection = document.getElementById("dir-select").value;
+    const game = document.getElementById("game-select").value;
+    var current_index = data.length - 1;
+    var inverse_pos = Array.from(Array(data.length).fill(0));
+    sessionStorage.setItem("round", 0);
+    sessionStorage.setItem("score", 0);
+    sessionStorage.setItem("fails", 0);
+
+    while (current_index >= 0) {
+        if (dirrection == 1) {
+            inverse_pos[current_index] = 1;
+            data[current_index].reverse();
+        } else if (dirrection == 2) {
+            if (Math.round(Math.random()) == 1) {
+                inverse_pos[current_index] = 1;
+                data[current_index].reverse();
+            }
+        }
+        var random_index = Math.floor(Math.random() * current_index);
+        if (current_index != 0) {
+            current_index--;
+            [data[current_index], data[random_index]] = [data[random_index], data[current_index]];
+        } else {
+            current_index--;
+        }
+    }
+    sessionStorage.setItem("game_stack", JSON.stringify([data, game, inverse_pos]));
+    insertSnippet("game_snippet", [data, game, inverse_pos]);
+}
+
+//
+function editVocabs(key) {}

@@ -6,14 +6,13 @@
 }
 
 :root {
-    --clr-general-shade-1: #efefef;
-    --clr-general-shade-2: #d3d3d3;
-    --clr-general-shade-3: #5f6368;
+    --clr-general-shade-1: #fafaff;
+    --clr-general-shade-2: #ddddec;
+    --clr-general-shade-3: #7373a9;
     --clr-general-shade-4: #6e7277;
-    --clr-general-highlight: #000000;
 
-    --grd-red: linear-gradient(to right, #ff002bff, #ff7189ff);
-    --grd-blue: linear-gradient(to right, #00aaffff, #71d0ffff);
+    --grd-red: linear-gradient(45deg, #ff7676, #d30000);
+    --grd-blue: linear-gradient(45deg, #7381ff, #0400cb);
 
     --flt-theme: 0.25;
 }
@@ -26,14 +25,13 @@
     color-scheme: dark;
     --img-theme-switch: url("icons/Moon.svg");
 
-    --clr-general-shade-1: #4c4c4c;
-    --clr-general-shade-2: #232323;
-    --clr-general-shade-3: #5f6368;
+    --clr-general-shade-1: #31333b;
+    --clr-general-shade-2: #252427;
+    --clr-general-shade-3: #7373a9;
     --clr-general-shade-4: #b1b8bf;
-    --clr-general-highlight: #ffffff;
 
-    --grd-red: linear-gradient(to right, #00aaffff, #71d0ffff);
-    --grd-blue: linear-gradient(to right, #ff002bff, #ff7189ff);
+    --grd-red: linear-gradient(45deg, #7381ff, #0400cb);
+    --grd-blue: linear-gradient(45deg, #ff7676, #d30000);
 
     --flt-theme: 4;
 }
@@ -69,15 +67,18 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
+    display: flex;
 }
 
-.navbar h1 {
+.navbar a {
+    font-weight: 700;
+    font-size: 35px;
     padding-top: 5px;
     padding-left: 10px;
-    font-family: Dosis;
+    text-decoration: none;
 }
 
-.navbar h1 .blue {
+.navbar a .blue {
     background: var(--grd-blue);
     background-clip: text;
     -webkit-background-clip: text;
@@ -85,7 +86,7 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.navbar h1 .red {
+.navbar a .red {
     background: var(--grd-red);
     background-clip: text;
     -webkit-background-clip: text;

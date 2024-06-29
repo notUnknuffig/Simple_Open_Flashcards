@@ -3,46 +3,41 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Simple Open Flashcards</title>
-        <link rel="stylesheet" href="main_style.css" />
-        <link rel="icon" href="icons/svg_icon.svg" type="image/x-icon" />
-        <script src="./javascript/vocabs.js"></script>
-        <script src="./javascript/main.js" defer></script>
-        <script src="./javascript/snippet_manager.js" defer></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet" />
+        <title>Flashcards</title>
+        <link rel="stylesheet" href="index_style.css" />
     </head>
     <body>
-        <div class="logo">
-            <img src="icons/svg_icon.svg" />
+        <div class="introduction">
+            <img src="icons/svg_icon.svg" alt="Icon" />
+            <h1 class="title"><span class="red">An Open Source</span> <span class="blue">Flashcards App</span></h1>
+            <p class="subtitle">
+                Create write and edit your own vocabulary stack or use stacks made by others.<br />Different task, games
+                and exercises allow you to choose your prefered way of learning.
+            </p>
+            <a href="main.html" class="start-button">
+                <div class="border-background">
+                    <p>Start Learning</p>
+                </div>
+            </a>
+            <a href="manual.html" class="read-button">
+                <div class="border-background">
+                    <p>Learn More</p>
+                </div>
+            </a>
         </div>
-        <div class="navbar">
-            <h1><span class="blue">Simple Open</span> <span class="red">Flashcards</span></h1>
-        </div>
-        <div class="sidebar">
-            <h1></h1>
-            <label class="switch">
-                <input class="checkbox" type="checkbox" onchange="setTheme()" id="theme-switch" />
-                <span class="slider"><img src="icons/Sun.svg" /></span>
-            </label>
-            <div class="search-button">
-                <button class="invisible-button" onclick="insertSnippet('search_snippet')">
-                    <img src="icons/search_button.svg" />
-                </button>
+        <div class="floating-cards">
+            <div class="card blue card-1">
+                <h1 class="card-vocab">Tere!</h1>
+                <p class="card-answer">こんにちは!</p>
             </div>
-            <div class="collections-button">
-                <button class="invisible-button" onclick="insertSnippet('collections_snippet')">
-                    <img src="icons/collections_button.svg" />
-                </button>
+            <div class="card red card-2">
+                <h1 class="card-vocab">Hello!</h1>
+                <p class="card-answer">привет!</p>
             </div>
-            <div class="home-button">
-                <button class="invisible-button" onclick="insertSnippet('home_snippet')">
-                    <img src="icons/home_button.svg" />
-                </button>
+            <div class="card blue card-3">
+                <h1 class="card-vocab">Bonjour!</h1>
+                <p class="card-answer">Hallo!</p>
             </div>
         </div>
-        <div class="main-window" id="snippet-insert"></div>
-        <div class="dialog-container" id="dialog-insert"></div>
     </body>
 </html>
