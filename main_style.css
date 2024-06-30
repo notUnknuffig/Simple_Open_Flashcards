@@ -9,7 +9,7 @@
     --clr-general-shade-1: #fafaff;
     --clr-general-shade-2: #ddddec;
     --clr-general-shade-3: #7373a9;
-    --clr-general-shade-4: #6e7277;
+    /* --clr-general-shade-4: #779dcc; */
 
     --grd-red: linear-gradient(45deg, #ff7676, #d30000);
     --grd-blue: linear-gradient(45deg, #7381ff, #0400cb);
@@ -28,12 +28,16 @@
     --clr-general-shade-1: #31333b;
     --clr-general-shade-2: #252427;
     --clr-general-shade-3: #7373a9;
-    --clr-general-shade-4: #b1b8bf;
+    /* --clr-general-shade-4: #4a5283; */
 
     --grd-red: linear-gradient(45deg, #7381ff, #0400cb);
     --grd-blue: linear-gradient(45deg, #ff7676, #d30000);
 
     --flt-theme: 4;
+}
+
+::placeholder {
+    color: #0073ff2f;
 }
 
 body {

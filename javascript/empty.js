@@ -9,15 +9,15 @@ function selectVocabs(section) {
     }
 
     // Split the string at newline and delimiter symbols and position of the id attribut
-    var strNewline = "\n";
-    var strDelimiter = ";";
-    var idPos = 3;
+    let strNewline = "\n";
+    let strDelimiter = ";";
+    let idPos = 3;
 
     // Split the string at every new line and loop over all the items
     const rows = loadedFile.split(strNewline);
-    var index = 1;
-    var lastSection = 0;
-    var selectedVocabs = [];
+    let index = 1;
+    let lastSection = 0;
+    let selectedVocabs = [];
     loadedFile = "";
     while (index < rows.length - 1) {
         const element = rows[index].split(strDelimiter);

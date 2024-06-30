@@ -1,9 +1,8 @@
 const reader = new FileReader();
-var loadedFile = "";
-var stackDict = [];
-var selected_stack = "";
-var selected_sectionized_stack = [];
-var selected_section = 0;
+let loadedFile = "";
+let stackDict = [];
+let selected_stack = "";
+let selected_sectionized_stack = [];
 
 const snippetInsertionPiont = document.getElementById("snippet-insert");
 const dialogInsertionPiont = document.getElementById("dialog-insert");
@@ -20,7 +19,7 @@ if (sessionStorage.getItem("current_snippet") == undefined) {
 insertSnippet(sessionStorage.getItem("current_snippet"));
 
 reader.addEventListener("load", function (e) {
-    var fileContents = e.target.result;
+    let fileContents = e.target.result;
     loadedFile = fileContents;
     insertSnippet("storage_dialog");
 });
@@ -55,6 +54,10 @@ function insertSnippet(fileName, data) {
                 innit_sections(data);
             } else if (fileName == "game_snippet") {
                 innit_game(data);
+            } else if (fileName == "gameover_snippet") {
+                innit_gameover(data);
+            } else if (fileName == "search_snippet") {
+                innit_search();
             }
         });
 }
@@ -73,7 +76,7 @@ function innit_import() {
         processSingleFiles(files);
     };
     const getFiles = () => {
-        var files = [...file_input.files];
+        let files = [...file_input.files];
         processSingleFiles(files);
     };
 
@@ -160,10 +163,10 @@ function innit_collection() {
 }
 
 function innit_game(data) {
-    var round = 0;
-    var score = 0;
-    var fails = 0;
-    var isRandom = false;
+    let round = 0;
+    let score = 0;
+    let fails = 0;
+    let isRandom = false;
 
     if (data == undefined) {
         data = JSON.parse(sessionStorage.getItem("game_stack"));
@@ -185,7 +188,8 @@ function innit_game(data) {
     const flashcardContainer = document.getElementById("flashcard-container");
     const nextCard = () => {
         if (round == data[0].length) {
-            console.log(score, fails);
+            insertSnippet("gameover_snippet", [score, fails, round]);
+            sessionStorage.setItem("game_stack", undefined);
             return;
         }
         const cardStr = `<div class="flashcard"><p id="vocab">${data[0][round][0]}</p>
@@ -219,8 +223,8 @@ function innit_game(data) {
             const text_field = document.getElementById("text-input");
             text_field.select();
             text_field.focus();
-            var current_fails = 0;
-            var word = data[0][round][1];
+            let current_fails = 0;
+            let word = data[0][round][1];
             const evaluateInput = () => {
                 if (text_field.value.toLowerCase() == word.split(" (")[0].toLowerCase()) {
                     if (current_fails >= 5) {
@@ -249,8 +253,8 @@ function innit_game(data) {
                 document.getElementById("button_3"),
                 document.getElementById("button_4"),
             ];
-            var resultIndex = Math.floor(Math.random() * 4);
-            var usedIndecies = [round];
+            let resultIndex = Math.floor(Math.random() * 4);
+            let usedIndecies = [round];
             for (let i = 0; i < button_array.length; i++) {
                 const element = button_array[i];
                 if (i == resultIndex) {
@@ -260,7 +264,7 @@ function innit_game(data) {
                         nextCard();
                     });
                 } else {
-                    var randomIndex = Math.floor(Math.random() * data[0].length);
+                    let randomIndex = Math.floor(Math.random() * data[0].length);
                     while (usedIndecies.indexOf(randomIndex) !== -1) {
                         randomIndex = Math.floor(Math.random() * data[0].length);
                     }
@@ -279,6 +283,20 @@ function innit_game(data) {
     };
 
     nextCard();
+}
+
+function innit_gameover(data) {
+    if (data == undefined) {
+        data = [sessionStorage.getItem("score"), sessionStorage.getItem("fails"), sessionStorage.getItem("round")];
+    }
+
+    const count = document.getElementById("count");
+    const fails = document.getElementById("fails");
+    const points = document.getElementById("points");
+
+    count.innerHTML = data[2];
+    fails.innerHTML = data[1];
+    points.innerHTML = data[0];
 }
 
 function innit_sections(key) {
@@ -318,7 +336,7 @@ function innit_storage_dialog() {
 
     acc_btn.addEventListener("click", (e) => {
         if (_stack_name.value != "") {
-            var storedFiles = {};
+            let storedFiles = {};
             if (localStorage.getItem("stored_stacks") != null) {
                 storedFiles = JSON.parse(localStorage.getItem("stored_stacks"));
             }
@@ -350,6 +368,142 @@ function innit_storage_dialog() {
             dialogInsertionPiont.innerHTML = "";
         } else {
             alert("Enter a name for the stack");
+        }
+    });
+}
+
+function innit_search() {
+    const search_input = document.getElementById("search-input");
+    const search_button = document.getElementById("search-button");
+    const stack_list = document.getElementById("stack-list");
+    const vocab_list = document.getElementById("vocab-list");
+    sessionStorage.setItem("selected_stack", "");
+    for (const [key, value] of Object.entries(stackDict)) {
+        stack_list.innerHTML = stack_list.innerHTML + `<button>${key}</button>`;
+    }
+    selected_stack = "";
+    const child_list = stack_list.children;
+    for (let i = 0; i < child_list.length; i++) {
+        const child = child_list[i];
+        child.addEventListener("click", (e) => {
+            if (selected_stack != child.innerHTML) {
+                for (let i = 0; i < child_list.length; i++) {
+                    child_list[i].setAttribute("class", "inactive");
+                }
+                child.setAttribute("class", "active");
+                selected_stack = child.innerHTML;
+                sessionStorage.setItem("selected_stack", child.innerHTML);
+            } else {
+                child.setAttribute("class", "inactive");
+                selected_stack = "";
+                sessionStorage.setItem("selected_stack", "");
+            }
+        });
+    }
+    let itemCount = 0;
+    let overflowItems = {};
+    let overflow = false;
+    let currentIndex = 0;
+    const search = async () => {
+        itemCount = 0;
+        overflowItems = {};
+        overflow = false;
+        currentIndex = 0;
+        str = search_input.value;
+        vocab_list.innerHTML = "";
+        // if (str.length <= 1) return;
+        if (selected_stack == "") {
+            for (const [key, value] of Object.entries(stackDict)) {
+                header = stackDict[key]["languages"];
+                overflowItems[key] = [[header[0], header[1]]];
+                if (itemCount < 100) {
+                    vocab_list.innerHTML += `<div class="header"><p>${header[0]}</p><p>${header[1]}</p><p>Section</p></div>`;
+                }
+                value_array = value["stack"].split("\n");
+                for (let j = 1; j < value_array.length; j++) {
+                    if (value_array[j].includes(str)) {
+                        if (itemCount < 100) {
+                            const split_vocab = value_array[j].split(";");
+                            vocab_list.innerHTML += `<div class="vocab"><p>${split_vocab[0]}</p><p>${split_vocab[1]}</p><p>${split_vocab[3]}</p></div>`;
+                            overflowItems[key].push(value_array[j].split(";"));
+                        } else {
+                            overflow = true;
+                            overflowItems[key].push(value_array[j].split(";"));
+                        }
+                        itemCount++;
+                    }
+                }
+            }
+        } else {
+            header = stackDict[selected_stack]["languages"];
+            vocab_list.innerHTML += `<div class="header"><p>${header[0]}</p><p>${header[1]}</p><p>Section</p></div>`;
+            value_array = stackDict[selected_stack]["stack"].split("\n");
+            for (let j = 1; j < value_array.length; j++) {
+                if (value_array[j].includes(str)) {
+                    itemCount++;
+                    if (itemCount <= 100) {
+                        const split_vocab = value_array[j].split(";");
+                        overflowItems[selected_stack].push(value_array[j].split(";"));
+                        vocab_list.innerHTML += `<div class="vocab"><p>${split_vocab[0]}</p><p>${split_vocab[1]}</p><p>${split_vocab[3]}</p></div>`;
+                    } else {
+                        overflowItems[selected_stack].push(value_array[j].split(";"));
+                    }
+                }
+            }
+        }
+        if (overflow === true) {
+            document.getElementById("more-buttons").style.display = "flex";
+        } else {
+            document.getElementById("more-buttons").style.display = "none";
+        }
+    };
+    search_button.addEventListener("click", search);
+    search_input.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+            search();
+        }
+    });
+    const displayCurrent = () => {
+        vocab_list.innerHTML = "";
+        let countedValues = 0;
+        for (const [key, value] of Object.entries(overflowItems)) {
+            if (currentIndex - countedValues < value.length) {
+                // Display Header
+                header = stackDict[key]["languages"];
+                vocab_list.innerHTML += `<div class="header"><p>${header[0]}</p><p>${header[1]}</p><p>Section</p></div>`;
+                // Display
+                if (currentIndex + 100 - countedValues < value.length) {
+                    for (
+                        let i = Math.max(currentIndex - countedValues, 0) + 1;
+                        i < currentIndex - countedValues + 101;
+                        i++
+                    ) {
+                        const vocab = value[i];
+                        vocab_list.innerHTML += `<div class="vocab"><p>${vocab[0]}</p><p>${vocab[1]}</p><p>${vocab[3]}</p></div>`;
+                    }
+                    return;
+                } else {
+                    for (let i = Math.max(currentIndex - countedValues, 0) + 1; i < value.length; i++) {
+                        const vocab = value[i];
+                        vocab_list.innerHTML += `<div class="vocab"><p>${vocab[0]}</p><p>${vocab[1]}</p><p>${vocab[3]}</p></div>`;
+                    }
+                }
+            }
+            countedValues += value.length;
+        }
+    };
+    document.getElementById("previous-button").addEventListener("click", (e) => {
+        window.scrollTo(0, 0);
+        if (currentIndex >= 100) {
+            currentIndex -= 100;
+            displayCurrent();
+        }
+    });
+    document.getElementById("next-button").addEventListener("click", (e) => {
+        window.scrollTo(0, 0);
+        if (currentIndex + 100 <= itemCount) {
+            currentIndex += 100;
+            displayCurrent();
         }
     });
 }
@@ -422,10 +576,10 @@ function headerLang(file) {
     return [file[0], file[1]];
 }
 
-// Sort the array by sections [Section_1,Section_2] -> [[Section_1],[Section_2]]
+// Sort the array by sections [Section_1,Section_2] -> [Section_1[],Section_2[]]
 function sectionize(str) {
     str_array = str.split("\n");
-    var section = 0;
+    let section = 0;
     sectionized_array = [[]];
     for (let i = 1; i < str_array.length - 1; i++) {
         vocab = str_array[i].split(";");
@@ -443,7 +597,7 @@ function sectionize(str) {
 // Select custom range for section
 function selectCustomRange() {
     const custom_range_input = document.getElementById("custom-range");
-    var input_array = custom_range_input.value.split("-");
+    let input_array = custom_range_input.value.split("-");
     if (input_array[0] == "") {
         alert("Select a section or enter a range between two values.");
         return;
@@ -453,7 +607,7 @@ function selectCustomRange() {
         alert("Select a range between a maximum of two values.");
         return;
     }
-    var stack = [];
+    let stack = [];
     for (let i = Number(input_array[0]) - 1; i < Number(input_array[1]); i++) {
         if (selected_sectionized_stack.length < i) {
             break;
@@ -467,8 +621,8 @@ function selectCustomRange() {
 function startVocabGame(data) {
     const dirrection = document.getElementById("dir-select").value;
     const game = document.getElementById("game-select").value;
-    var current_index = data.length - 1;
-    var inverse_pos = Array.from(Array(data.length).fill(0));
+    let current_index = data.length - 1;
+    let inverse_pos = Array.from(Array(data.length).fill(0));
     sessionStorage.setItem("round", 0);
     sessionStorage.setItem("score", 0);
     sessionStorage.setItem("fails", 0);
@@ -483,7 +637,7 @@ function startVocabGame(data) {
                 data[current_index].reverse();
             }
         }
-        var random_index = Math.floor(Math.random() * current_index);
+        let random_index = Math.floor(Math.random() * current_index);
         if (current_index != 0) {
             current_index--;
             [data[current_index], data[random_index]] = [data[random_index], data[current_index]];

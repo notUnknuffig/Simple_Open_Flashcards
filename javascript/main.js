@@ -11,11 +11,8 @@ function setTheme() {
     }
 }
 
-var theme = "light";
-if (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme:dark)").matches
-) {
+let theme = "light";
+if (window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches) {
     theme_switch.checked = true;
     theme = "dark";
 }

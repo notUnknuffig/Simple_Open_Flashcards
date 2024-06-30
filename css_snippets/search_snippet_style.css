@@ -1,0 +1,100 @@
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-block: 5%;
+    width: 100%;
+    justify-content: center;
+}
+
+.nav #search-input {
+    width: 50%;
+    font-size: 20px;
+    margin: 1%;
+}
+
+.nav #search-button {
+    width: 10%;
+    margin: 1%;
+}
+
+#more-buttons button,
+.nav #search-button,
+.nav #search-input,
+.nav #stack-list button {
+    border: transparent;
+    background-color: var(--clr-general-shade-2);
+    color: var(--clr-general-shade-3);
+    border-radius: 5px;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    padding-inline: 10px;
+    transition-property: color, border;
+    transition-duration: 0.15s;
+}
+
+#more-buttons button:hover,
+.nav #search-button:hover,
+.nav #search-input:hover,
+.nav #stack-list button:hover {
+    color: var(--clr-general-heighlight);
+}
+
+#more-buttons button:focus,
+.nav #search-button:focus,
+.nav #search-input:focus {
+    outline: none;
+    border: 3px solid var(--clr-general-shade-3);
+    color: var(--clr-general-heighlight);
+}
+
+.nav #stack-list {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+.nav #stack-list .active {
+    color: var(--clr-general-shade-1);
+    background-color: var(--clr-general-shade-3);
+}
+
+#vocab-list {
+    padding-inline: 5%;
+    padding-bottom: 2%;
+    width: 100%;
+}
+
+#vocab-list .header {
+    color: var(--clr-general-shade-3);
+    font-size: 20px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--clr-general-shade-2);
+    padding-block: 3px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5fr 5fr 1fr;
+}
+
+#vocab-list .vocab {
+    font-size: 18px;
+    color: var(--clr-general-shade-3);
+    border-bottom: 1px dotted var(--clr-general-shade-2);
+    padding-block: 3px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5fr 5fr 1fr;
+}
+
+#more-buttons {
+    width: 100%;
+    display: none;
+    justify-content: space-evenly;
+    padding-bottom: 2%;
+    padding-inline: 5%;
+}
+
+#more-buttons button {
+    width: 10rem;
+}
