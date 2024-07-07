@@ -9,6 +9,10 @@
     --clr-general-shade-1: #fafaff;
     --clr-general-shade-2: #ddddec;
     --clr-general-shade-3: #7373a9;
+    --clr-general-heighlight: #0f0f0f;
+
+    --clr-general-true: #a4d79b;
+    --clr-general-false: #e39797;
     /* --clr-general-shade-4: #779dcc; */
 
     --grd-red: linear-gradient(45deg, #ff7676, #d30000);
@@ -28,6 +32,7 @@
     --clr-general-shade-1: #31333b;
     --clr-general-shade-2: #252427;
     --clr-general-shade-3: #7373a9;
+    --clr-general-heighlight: #f0f0f0;
     /* --clr-general-shade-4: #4a5283; */
 
     --grd-red: linear-gradient(45deg, #7381ff, #0400cb);
@@ -99,13 +104,21 @@ body {
 }
 
 .sidebar {
+    position: relative;
     z-index: 1;
     background-color: var(--clr-general-shade-2);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     width: 60px;
-    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.sidebar-button-container {
+    position: sticky;
+    bottom: 0px;
+    width: 100%;
     display: grid;
-    grid-template-rows: 1fr 60px 40px 40px 40px;
+    grid-template-rows: 60px 40px 40px 40px;
     gap: 20px;
     padding-bottom: 20px;
 }

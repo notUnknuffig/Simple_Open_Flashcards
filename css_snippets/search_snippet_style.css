@@ -80,11 +80,15 @@
 #vocab-list .vocab {
     font-size: 18px;
     color: var(--clr-general-shade-3);
-    border-bottom: 1px dotted var(--clr-general-shade-2);
-    padding-block: 3px;
+    border-bottom: 1px dotted var(--clr-general-shade-3);
+    padding-block: 10px;
     width: 100%;
     display: grid;
     grid-template-columns: 5fr 5fr 1fr;
+}
+
+#vocab-list .vocab:nth-child(2n) {
+    background-color: var(--clr-general-shade-2);
 }
 
 #more-buttons {

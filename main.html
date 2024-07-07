@@ -17,25 +17,26 @@
             <a href="index.html"><span class="blue">Simple Open</span> <span class="red">Flashcards</span></a>
         </div>
         <div class="sidebar">
-            <h1></h1>
-            <label class="switch">
-                <input class="checkbox" type="checkbox" onchange="setTheme()" id="theme-switch" />
-                <span class="slider"><img src="icons/Sun.svg" /></span>
-            </label>
-            <div class="search-button">
-                <button class="invisible-button" onclick="insertSnippet('search_snippet')">
-                    <img src="icons/search.svg" />
-                </button>
-            </div>
-            <div class="collections-button">
-                <button class="invisible-button" onclick="insertSnippet('collections_snippet')">
-                    <img src="icons/collection.svg" />
-                </button>
-            </div>
-            <div class="home-button">
-                <button class="invisible-button" onclick="insertSnippet('home_snippet')">
-                    <img src="icons/home.svg" />
-                </button>
+            <div class="sidebar-button-container">
+                <label class="switch">
+                    <input class="checkbox" type="checkbox" onchange="setTheme()" id="theme-switch" />
+                    <span class="slider"><img src="icons/Sun.svg" /></span>
+                </label>
+                <div class="search-button">
+                    <button class="invisible-button" onclick="insertSnippet('search_snippet')">
+                        <img src="icons/search.svg" />
+                    </button>
+                </div>
+                <div class="collections-button">
+                    <button class="invisible-button" onclick="insertSnippet('collections_snippet')">
+                        <img src="icons/collection.svg" />
+                    </button>
+                </div>
+                <div class="home-button">
+                    <button class="invisible-button" onclick="insertSnippet('home_snippet')">
+                        <img src="icons/home.svg" />
+                    </button>
+                </div>
             </div>
         </div>
         <div class="main-window" id="snippet-insert"></div>

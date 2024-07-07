@@ -42,22 +42,36 @@ function insertSnippet(fileName, data) {
                 snippetInsertionPiont.innerHTML = htmlSnippet;
                 sessionStorage.setItem("current_snippet", fileName);
             }
-            if (fileName == "import_stack_snippet") {
-                innit_import();
-            } else if (fileName == "hosted_stack_snippet") {
-                innit_host();
-            } else if (fileName == "storage_dialog") {
-                innit_storage_dialog();
-            } else if (fileName == "collections_snippet") {
-                innit_collection();
-            } else if (fileName == "sections_snippet") {
-                innit_sections(data);
-            } else if (fileName == "game_snippet") {
-                innit_game(data);
-            } else if (fileName == "gameover_snippet") {
-                innit_gameover(data);
-            } else if (fileName == "search_snippet") {
-                innit_search();
+            switch (fileName) {
+                case "import_stack_snippet":
+                    innit_import();
+                    break;
+                case "hosted_stack_snippet":
+                    innit_host();
+                    break;
+                case "storage_dialog":
+                    innit_storage_dialog();
+                    break;
+                case "collections_snippet":
+                    innit_collection();
+                    break;
+                case "sections_snippet":
+                    innit_sections(data);
+                    break;
+                case "game_snippet":
+                    innit_game(data);
+                    break;
+                case "gameover_snippet":
+                    innit_gameover(data);
+                    break;
+                case "search_snippet":
+                    innit_search();
+                    break;
+                case "edit_snippet":
+                    innit_edit(data);
+                    break;
+                default:
+                    break;
             }
         });
 }
@@ -109,7 +123,6 @@ function innit_host() {
         if (acc_name.value === "" && rep_name.value === "" && fil_name.value === "" && fil_select.value !== "") {
             importFromGitHub(fil_select.value);
         } else if (acc_name.value !== "" && rep_name.value !== "" && fil_name.value !== "" && fil_select.value === "") {
-            console.log(fil_select.value);
             importFromGitHub(fil_name.value, acc_name.value, rep_name.value);
         }
     };
@@ -169,7 +182,7 @@ function innit_game(data) {
     let isRandom = false;
 
     if (data == undefined) {
-        data = JSON.parse(sessionStorage.getItem("game_stack"));
+        data = JSON.parse(sessionStorage.getItem("loaded_stack"));
     }
     if (sessionStorage.getItem("round") != undefined) {
         round = Number(sessionStorage.getItem("round"));
@@ -189,7 +202,7 @@ function innit_game(data) {
     const nextCard = () => {
         if (round == data[0].length) {
             insertSnippet("gameover_snippet", [score, fails, round]);
-            sessionStorage.setItem("game_stack", undefined);
+            sessionStorage.setItem("loaded_stack", undefined);
             return;
         }
         const cardStr = `<div class="flashcard"><p id="vocab">${data[0][round][0]}</p>
@@ -294,6 +307,11 @@ function innit_gameover(data) {
     const fails = document.getElementById("fails");
     const points = document.getElementById("points");
 
+    const section_index = sessionStorage.getItem("selected_section");
+    const progress = data[0] / data[2];
+    stackDict[selected_stack]["progress"][section_index] = progress;
+    localStorage.setItem("stored_stacks", JSON.stringify(stackDict));
+
     count.innerHTML = data[2];
     fails.innerHTML = data[1];
     points.innerHTML = data[0];
@@ -310,6 +328,35 @@ function innit_sections(key) {
     document.getElementById("forwards-select").innerHTML = langs[0] + " - " + langs[1];
     document.getElementById("backwards-select").innerHTML = langs[1] + " - " + langs[0];
 
+    const save_button = document.getElementById("save-button");
+    const delete_button = document.getElementById("delete-button");
+
+    if (JSON.parse(localStorage.getItem("stored_stacks"))[selected_stack] != undefined) {
+        save_button.setAttribute("class", "cr-input");
+        delete_button.setAttribute("class", "cr-input active");
+        delete_button.addEventListener("click", (e) => {
+            let storedFiles = {};
+            if (localStorage.getItem("stored_stacks") != null) {
+                storedFiles = JSON.parse(localStorage.getItem("stored_stacks"));
+            }
+            delete storedFiles[selected_stack];
+            localStorage.setItem("stored_stacks", JSON.stringify(storedFiles));
+            insertSnippet("collections_snippet");
+        });
+    } else {
+        save_button.setAttribute("class", "cr-input active");
+        save_button.addEventListener("click", (e) => {
+            let storedFiles = {};
+            if (localStorage.getItem("stored_stacks") != null) {
+                storedFiles = JSON.parse(localStorage.getItem("stored_stacks"));
+            }
+            storedFiles[selected_stack] = stackDict[selected_stack];
+            localStorage.setItem("stored_stacks", JSON.stringify(storedFiles));
+            insertSnippet("sections_snippet");
+        });
+        delete_button.setAttribute("class", "cr-input");
+    }
+
     document.getElementById("custom-range").addEventListener("keydown", (e) => {
         if (e.key == "Enter") {
             selectCustomRange();
@@ -324,7 +371,16 @@ function innit_sections(key) {
         })
         .then((htmlSnippet) => {
             for (let i = 0; i < selected_sectionized_stack.length; i++) {
-                stack_list.innerHTML = stack_list.innerHTML + htmlSnippet.replace(/__key/g, i + 1);
+                let progress = stackDict[selected_stack]["progress"][i];
+                if (progress == null || progress == undefined) {
+                    progress = 0;
+                }
+                stack_list.innerHTML =
+                    stack_list.innerHTML +
+                    htmlSnippet
+                        .replace(/__key/g, i + 1)
+                        .replace(/__nprogress/g, Math.round(progress * 100))
+                        .replace(/__progress/g, progress);
             }
         });
 }
@@ -508,6 +564,65 @@ function innit_search() {
     });
 }
 
+function innit_edit(key) {
+    if (key == undefined) {
+        selected_sectionized_stack = sectionize(stackDict[selected_stack]["stack"]);
+        key = sessionStorage.getItem("selected_section");
+    } else {
+        sessionStorage.setItem("selected_section", key);
+    }
+    document.getElementById("vocab-list-title").innerText = `${selected_stack} | ${Number(key) + 1}`;
+    document.getElementById("first-language").innerText = stackDict[selected_stack]["languages"][0];
+    document.getElementById("second-language").innerText = stackDict[selected_stack]["languages"][1];
+    const list_container = document.getElementById("vocab-list");
+    const selected_vocabs = selected_sectionized_stack[key];
+    const edit_function = (i, list_entry) => {
+        console.log(list_entry.children[0]);
+        list_entry.children[0].removeAttribute("disabled");
+        list_entry.children[1].removeAttribute("disabled");
+        list_entry.children[2].innerText = "Save";
+        list_entry.children[2].addEventListener("click", function save_button_function() {
+            save_function(i, list_entry);
+            list_entry.children[2].removeEventListener("click", save_button_function);
+        });
+    };
+    const save_function = (i, list_entry) => {
+        console.log(list_entry.children[0]);
+        list_entry.children[0].setAttribute("disabled", true);
+        list_entry.children[1].setAttribute("disabled", true);
+        list_entry.children[2].innerText = "Edit";
+        list_entry.children[2].addEventListener("click", function edit_button_function() {
+            edit_function(i, list_entry);
+            list_entry.children[2].removeEventListener("click", edit_button_function);
+        });
+    };
+    for (let i = 0; i < selected_vocabs.length; i++) {
+        const vocab = selected_vocabs[i];
+        let list_entry = document.createElement("div");
+        list_entry.setAttribute("class", "vocab");
+
+        let vocab_1 = document.createElement("input");
+        let vocab_2 = document.createElement("input");
+        vocab_1.setAttribute("disabled", true);
+        vocab_2.setAttribute("disabled", true);
+        vocab_1.value = vocab[0];
+        vocab_2.value = vocab[1];
+
+        list_entry.appendChild(vocab_1);
+        list_entry.appendChild(vocab_2);
+
+        let list_entry_button = document.createElement("button");
+        list_entry_button.innerText = "Edit";
+        list_entry_button.addEventListener("click", function edit_button_function() {
+            edit_function(i, list_entry);
+            list_entry_button.removeEventListener("click", edit_button_function);
+        });
+        list_entry.appendChild(list_entry_button);
+
+        list_container.appendChild(list_entry);
+    }
+}
+
 // Select File Button
 function select_file() {
     document.getElementById("file").click();
@@ -580,7 +695,7 @@ function headerLang(file) {
 function sectionize(str) {
     str_array = str.split("\n");
     let section = 0;
-    sectionized_array = [[]];
+    let sectionized_array = [[]];
     for (let i = 1; i < str_array.length - 1; i++) {
         vocab = str_array[i].split(";");
         if (section != Number(vocab[vocab.length - 1]) && vocab[vocab.length - 1] != "") {
@@ -618,7 +733,7 @@ function selectCustomRange() {
 }
 
 // Innit the vocab game
-function startVocabGame(data) {
+function startVocabGame(data, index) {
     const dirrection = document.getElementById("dir-select").value;
     const game = document.getElementById("game-select").value;
     let current_index = data.length - 1;
@@ -645,9 +760,7 @@ function startVocabGame(data) {
             current_index--;
         }
     }
-    sessionStorage.setItem("game_stack", JSON.stringify([data, game, inverse_pos]));
+    sessionStorage.setItem("loaded_stack", JSON.stringify([data, game, inverse_pos]));
+    sessionStorage.setItem("selected_section", index);
     insertSnippet("game_snippet", [data, game, inverse_pos]);
 }
-
-//
-function editVocabs(key) {}
