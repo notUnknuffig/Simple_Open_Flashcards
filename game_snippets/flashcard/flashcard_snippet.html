@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="../../game_snippets/flashcard/flashcard_style.css" />
+<div class="game-container">
+	<div class="vocab-card">
+		<p id="given-vocab"></p>
+		<p id="result-vocab"></p>
+		<p id="lang-info" class="lang-info"></p>
+	</div>
+	<div class="flash-input-container input-container" style="grid-template-columns: 1fr 1fr">
+		<button class="base-button flash-show-button" id="flash-show-button" style="grid-column: 1 / span 2">
+			Show
+		</button>
+		<button class="base-button correct disabled" id="flash-correct-button">Known</button>
+		<button class="base-button incorrect disabled" id="flash-incorrect-button">Unknown</button>
+	</div>
+</div>
+<script src="./game_snippets/flashcard/flashcard_function.js"></script>

@@ -1,15 +1,15 @@
 <div class="main-button import-gh-button">
-    <button class="invisible-button edit-button" onclick="insertSnippet('edit_snippet', Number(__key) - 1)">
-        <img src="./icons/settings.svg" />
-    </button>
-    <button
-        class="invisible-button"
-        onclick="startVocabGame(selected_sectionized_stack[Number('__key') - 1], Number(__key) - 1)"
-    >
-        <img class="main-icon" src="./icons/cards.svg" />
-        <p>__key</p>
-        <div class="progress-bar">
-            <div data-progress="__nprogress" style="width: __nprogress%"><p>__nprogress%</p></div>
-        </div>
-    </button>
+	<button class="invisible-button edit-button" onclick="insertSnippet('edit_snippet', Number(__key) - 1)">
+		<img src="./icons/settings.svg" />
+	</button>
+	<button
+		class="invisible-button"
+		onclick="processVocabData(selected_sectionized_stack[Number('__key') - 1], Number(__key) - 1)"
+	>
+		<img class="main-icon" src="./icons/cards.svg" />
+		<p>__key</p>
+		<div class="progress-bar">
+			<div data-progress="__nprogress" style="width: __nprogress%"><p>__nprogress%</p></div>
+		</div>
+	</button>
 </div>
